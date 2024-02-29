@@ -1,5 +1,6 @@
 // You can add and export any helper functions you want here. If you aren't using any, then you can just leave this file as is.
 
+const pattern = new RegExp(/^[-_.a-zA-Z0-9]+$/);
 
 let checkUndefinedOrNull = (obj, variable) => {
     if (obj === undefined || obj === null) throw `All fields need to be supplied. Input for '${variable || 'provided variable'}' param is undefined or null.`;
@@ -22,7 +23,9 @@ let checkisValidNumber = (num, variable) => {
 let checkisValidWebsite = (str, variable) => {
     str = str.trim();
     if (!(str.startsWith("http://www.")) || !(str.endsWith(".com"))) throw `Input '${variable || 'provided'}' of value '${str || 'provided variable'}' is not a valid website.`;
-    if ((str.slice((str.indexOf('.') + 1), str.lastIndexOf('.'))).length < 5) throw `Input '${variable || 'provided'}' of value '${str || 'provided variable'}' doesnot have 5 chars in-between 'http://www.' and '.com'.`;
+    let webStr = str.slice((str.indexOf('.') + 1), str.lastIndexOf('.'));
+    if (webStr.length < 5) throw `Input '${variable || 'provided'}' of value '${str || 'provided variable'}' doesnot have 5 chars in-between 'http://www.' and '.com'.`;
+    if (!(pattern.test(webStr))) throw `Input '${variable || 'provided'}' of value '${str || 'provided variable'}' is an invalid URL.`;
 };
 
 let checkisValidArray = (arr, variable) => {
@@ -49,7 +52,7 @@ let checkisValidDate = (date) => {
     date = date.trim();
     if (!(date.includes("/")) || !(((date.split("/")).length) === 3)) throw `Invalid date format '${date || 'provided'}'. Expected format: 'mm/dd/yyyy'.`;
     let dateArr = date.split("/");
-    let daysPerMonth = ['31', '29', '31', '30', '31', '30', '31', '31', '30', '31', '30', '31'];
+    let daysPerMonth = ['31', '28', '31', '30', '31', '30', '31', '31', '30', '31', '30', '31'];
     let months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     let currMonth;
     for (let i in dateArr) {
