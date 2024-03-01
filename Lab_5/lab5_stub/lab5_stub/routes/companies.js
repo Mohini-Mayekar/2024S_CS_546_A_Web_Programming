@@ -5,7 +5,7 @@
 
 import express from 'express';
 import { getCompanies, getCompanyById } from '../data/data.js';
-import { checkisValidId } from '../helpers.js';
+import { checkisValidId, err_handler } from '../helpers.js';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.route('/').get(async (req, res) => {
         const companyList = await getCompanies();
         return res.json(companyList);
     } catch (e) {
-        return res.status(500).send(e);
+        return err_handler(res, e);
     }
 });
 // Implement GET Request Method and send a JSON response See lecture code!

@@ -3,31 +3,45 @@ to get the comapnies, people, getCompanyByID, getPersonById.  You will import th
 */
 
 import axios from "axios";
-import { url_companies, url_people, checkisValidId } from '../helpers.js';
+import { url_companies, url_people, err_handler_data } from '../helpers.js';
 
 const getCompanies = async () => {
-    const companiesData = await axios.get(url_companies);
-    return companiesData.data;
+    return await getCompaniesData(false);
+};
+
+const getCompaniesData = async (isById) => {
+    try {
+        const companiesData = await axios.get(url_companies);
+        return companiesData.data;
+    } catch (e) {
+        err_handler_data('Company', e, isById);
+    }
 };
 
 const getPeople = async () => {
-    const peopleData = await axios.get(url_people);
-    return peopleData.data;
+    return await getPeopleData(false);
+};
+
+const getPeopleData = async (isById) => {
+    try {
+        const peopleData = await axios.get(url_people);
+        return peopleData.data;
+    } catch (e) {
+        err_handler_data('Person', e, isById);
+    }
 };
 
 const getCompanyById = async (id) => {
-    //id = checkisValidId(id, 'companyId');
     let companiesData = new Array;
-    companiesData = await getCompanies();
+    companiesData = await getCompaniesData(true);
     let companyById = fetchResourceById(id, companiesData);
     if (companyById === undefined) throw `Company Not Found!`;
     return companyById;
 };
 
 const getPersonById = async (id) => {
-    //id = checkisValidId(id, 'personId');
     let peopleData = new Array;
-    peopleData = await getPeople();
+    peopleData = await getPeopleData(true);
     let personById = fetchResourceById(id, peopleData);
     if (personById === undefined) throw `Person Not Found!`;
     return personById;
