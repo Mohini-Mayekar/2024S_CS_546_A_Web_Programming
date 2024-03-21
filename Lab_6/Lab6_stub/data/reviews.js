@@ -28,8 +28,8 @@ const createReview = async (
 const getAllReviews = async (productId) => {
   productId = validateId(productId, 'productId');
   const product = await productsData.get(productId);
-  if (product.reviews.length === 0)
-    throw `No reviews found for product with id '${productId}'.`
+  // if (product.reviews.length === 0)
+  //   throw `No reviews found for product with id '${productId}'.`
   return product.reviews;
 };
 

@@ -33,10 +33,6 @@ const getAll = async () => {
   const productCollection = await products();
   let productList = await productCollection.find({}).project({ _id: 1, productName: 1 }).toArray();
   if (!productList) throw 'Could not get all products';
-  productList = productList.map((element) => {
-    element._id = element._id.toString();
-    return element;
-  });
   return productList;
 };
 

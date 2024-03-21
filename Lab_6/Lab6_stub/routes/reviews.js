@@ -18,6 +18,7 @@ router
     }
     try {
       const productReviewList = await reviewsData.getAllReviews(req.params.id);
+      if (productReviewList.length == 0) return res.status(404).json(productReviewList);
       return res.json(productReviewList);
     } catch (e) {
       return res.status(404).json({ error: e });
