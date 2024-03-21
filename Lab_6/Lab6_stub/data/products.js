@@ -2,7 +2,7 @@
 
 import { products } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
-import { validateProductInput, validateId } from '../helpers.js'
+import { validateProductInput, validateId, updatedProd } from '../helpers.js'
 
 const create = async (
   productName,
@@ -86,17 +86,8 @@ const update = async (
   updatedProduct.averageRating = product.averageRating;
   updatedProduct.reviews = product.reviews;
 
-  const productCollection = await products();
-
-  const updatedInfo = await productCollection.findOneAndUpdate(
-    { _id: ObjectId.createFromHexString(productId) },
-    { $set: updatedProduct },
-    { returnDocument: 'after' }
-  );
-  if (!updatedInfo) {
-    throw 'could not update product successfully';
-  }
-  updatedInfo._id = updatedInfo._id.toString();
+  const updatedInfo = await updatedProd(productId, updatedProduct, true, false, false, false);
+  //updatedInfo._id = updatedInfo._id.toString();
   return updatedInfo;
 };
 

@@ -3,7 +3,7 @@
 
 import express from 'express';
 import { reviewsData } from '../data/index.js';
-import { validateReviewInput, validateId } from '../helpers.js'
+import { validateReviewInput, validateId, validateUpdateReviewInput } from '../helpers.js'
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router
       const productReviewList = await reviewsData.getAllReviews(req.params.id);
       return res.json(productReviewList);
     } catch (e) {
-      return res.status(500).json({ error: e });
+      return res.status(404).json({ error: e });
     }
   })
   .post(async (req, res) => {
@@ -39,7 +39,7 @@ router
     }
     //check all inputs, that should respond with a 400
     try {
-      reviewData = validateReviewInput(null, req.params.id, reviewData.title, reviewData.reviewerName, reviewData.review, reviewData.rating, false);
+      reviewData = validateReviewInput(req.params.id, reviewData.title, reviewData.reviewerName, reviewData.review, reviewData.rating);
     } catch (e) {
       return res.status(400).json({ error: e });
     }
@@ -48,7 +48,7 @@ router
       const newReview = await reviewsData.createReview(req.params.id, reviewData.title, reviewData.reviewerName, reviewData.review, reviewData.rating);
       return res.json(newReview);
     } catch (e) {
-      return res.status(500).json({ error: e });
+      return res.status(404).json({ error: e });
     }
   });
 
@@ -83,7 +83,7 @@ router
         .json({ error: 'There are no fields in the request body' });
     }
     try {
-      reviewInfo = validateReviewInput(req.params.id, null, reviewInfo.title, reviewInfo.reviewerName, reviewInfo.review, reviewInfo.rating, true);
+      reviewInfo = validateUpdateReviewInput(req.params.id, reviewInfo);
     } catch (e) {
       return res.status(400).json({ error: e });
     }

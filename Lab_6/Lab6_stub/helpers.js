@@ -1,5 +1,5 @@
 // You can add and export any helper functions you want here - if you aren't using any, then you can just leave this file as is
-
+import { products } from './config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 
 const pattern = new RegExp(/^[-_.a-zA-Z0-9]+$/);
@@ -157,20 +157,13 @@ let validateProductInput = (
     return product;
 };
 
-let validateReviewInput = (reviewId, productId, title, reviewerName, review, rating, isUpdate) => {
-    if (isUpdate) {
-        checkUndefinedOrNull(reviewId, 'reviewId');
-    }
+let validateReviewInput = (productId, title, reviewerName, review, rating) => {
     checkUndefinedOrNull(productId, 'productId');
     checkUndefinedOrNull(title, 'title');
     checkUndefinedOrNull(reviewerName, 'reviewerName');
     checkUndefinedOrNull(review, 'review');
     checkUndefinedOrNull(rating, 'rating');
 
-    if (isUpdate) {
-        reviewId = checkisValidString(reviewId, 'reviewId');
-        if (!ObjectId.isValid(reviewId)) throw `invalid object ID '${reviewId}'.`;
-    }
     productId = checkisValidString(productId, 'productId');
 
     title = checkisValidString(title, 'title');
@@ -182,7 +175,6 @@ let validateReviewInput = (reviewId, productId, title, reviewerName, review, rat
     checkisValidNumber(rating, 'rating');
 
     let reviewObj = {
-        //productId: productId,
         title: title,
         reviewerName: reviewerName,
         review: review,
@@ -192,31 +184,30 @@ let validateReviewInput = (reviewId, productId, title, reviewerName, review, rat
     return reviewObj;
 };
 
+let isPresentInInput = (obj) => {
+    return (!(obj === undefined || obj === null));
+};
+
 let validateUpdateReviewInput = (reviewId, updateObj) => {
     let updatedReviewObj = {};
     checkUndefinedOrNull(reviewId, 'reviewId');
     checkUndefinedOrNull(updateObj, 'updateObject');
-    if (updateObj.title) {
+    if (isPresentInInput(updateObj.title)) {
         checkUndefinedOrNull(updateObj.title, 'title');
         updatedReviewObj.title = checkisValidString(updateObj.title, 'title');
     }
-    if (updateObj.reviewerName) {
+    if (isPresentInInput(updateObj.reviewerName)) {
         checkUndefinedOrNull(updateObj.reviewerName, 'reviewerName');
         updatedReviewObj.reviewerName = checkisValidString(updateObj.reviewerName, 'reviewerName');
     }
-    if (updateObj.review) {
+    if (isPresentInInput(updateObj.review)) {
         checkUndefinedOrNull(updateObj.review, 'review');
         updatedReviewObj.review = checkisValidString(updateObj.review, 'review');
     }
-    if (updateObj.rating) {
+    if (isPresentInInput(updateObj.rating)) {
         checkUndefinedOrNull(updateObj.rating, 'rating');
         checkisValidNumber(updateObj.rating, 'rating');
         updatedReviewObj.rating = updateObj.rating;
-    }
-    if (updateObj.productId) {
-        checkUndefinedOrNull(updateObj.productId, 'productId');
-        updatedReviewObj.productId = checkisValidString(updateObj.productId, 'productId');
-        if (!ObjectId.isValid(updateObj.productId)) throw `invalid object ID '${updateObj.productId}'.`;
     }
     updateObj.reviewDate = getCurrDate();
     updateObj._id = ObjectId.createFromHexString(reviewId);
@@ -226,7 +217,7 @@ let validateUpdateReviewInput = (reviewId, updateObj) => {
 let getCurrDate = () => { //mm/dd/yyyy
     let currDate = new Date();
     let currMonth = getData(currDate.getMonth() + 1);
-    let currDay = getData(currDate.getDay() + 1);
+    let currDay = getData(currDate.getDate());
     let currYear = currDate.getFullYear();
     let res = currMonth + '/' + currDay + '/' + currYear;
     return res;//`${currMonth}/${currDay}/${currYear}`;
@@ -236,6 +227,35 @@ let getData = (data) => {
     return (data) > 9 ? (data) : `0${(data)}`;
 };
 
+let updatedProd = async (productId, productObj, isUpdateProduct, isCreateReview, isUpdateReview, isRemoveReview) => {
+    const productCollection = await products();
+    let updateInfo;
+    if (isUpdateProduct) {
+        updateInfo = await productCollection.findOneAndReplace(
+            { _id: ObjectId.createFromHexString(productId) },
+            productObj,
+            { returnDocument: 'after' }
+        );
+    } else {
+        updateInfo = await productCollection.findOneAndUpdate(
+            { _id: ObjectId.createFromHexString(productId) },
+            { $set: productObj },
+            { returnDocument: 'after' }
+        );
+    }
+    if (!updateInfo) {
+        if (isUpdateProduct)
+            throw 'could not update product successfully';
+        else if (isCreateReview)
+            throw 'Could not add review';
+        else if (isUpdateReview)
+            throw 'could not update product successfully';
+        else if (isRemoveReview)
+            throw 'Could not update product rating after removing a review';
+    }
+    return updateInfo;
+};
+
 export {
-    checkUndefinedOrNull, checkisValidString, checkisValidNumber, checkisValidWebsite, checkisValidArray, checkisValidBoolean, checkisValidDate, validateId, validateProductInput, validateReviewInput, validateUpdateReviewInput
+    checkUndefinedOrNull, checkisValidString, checkisValidNumber, checkisValidWebsite, checkisValidArray, checkisValidBoolean, checkisValidDate, validateId, validateProductInput, validateReviewInput, validateUpdateReviewInput, updatedProd
 }
