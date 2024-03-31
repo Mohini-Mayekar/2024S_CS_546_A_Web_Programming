@@ -1,0 +1,32 @@
+<!-- 
+This handlebar file will be rendered when the following route is hit: GET http://localhost:3000/
+ 
+ The title of the document should be "Movie Finder". You should have the title set as the <title> element of the HTML document and as an h1 in your document.
+
+Your page should reference a CSS file, /public/css/styles.css; this file should have at least 10 rulesets you must use at least 5 of them on this page. 
+
+
+ -->
+
+<article>
+    <h1>Movie Finder</h1>
+    <p>Here at Movie Finder you can browse movies easily by title and get details about it's release, genre ,
+        ratings, collections etc.</p>
+    <form action="/searchmovies" method="POST" class="search-movie-form">
+        <label for="searchMoviesByName">Search Movies:</label>
+        <input type="text" id="searchMoviesByName" name="searchMoviesByName">
+        <input type="submit" value="Search" class="button">
+    </form>
+    {{#if hasError404}}
+    <p class="error">We're sorry, but no results were found for '{{title}}'</p>
+    {{/if}}
+    {{#if hasError404Id}}
+    <p class="error">We're sorry, but no results were found for movie id: {{id}}.</p>
+    {{/if}}
+    {{#if hasError400}}
+    <p class="error">Movie name cannot be empty. Please enter a valid movie name.</p>
+    {{/if}}
+    {{#if hasError400Id}}
+    <p class="error">Movie ID cannot be empty. Please enter a valid movie ID.</p>
+    {{/if}}
+</article>

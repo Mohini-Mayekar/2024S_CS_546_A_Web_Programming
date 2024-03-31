@@ -1,0 +1,150 @@
+/*This file should have 10 CSS rulesets */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-size: 14pt;
+}
+
+body {
+    background: #bde2e4;
+    font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+main {
+    max-width: 75%;
+    margin: auto;
+}
+
+header {
+    border-bottom: 1px solid #afafaf;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: #222;
+    margin-bottom: 5px;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 2;
+}
+
+label {
+    font-weight: bold;
+}
+
+.movie-list {
+    padding: 20px;
+    line-height: 1.7em;
+}
+
+.button {
+    background-color: #41be60f1;
+    border: none;
+    color: rgba(23, 24, 23, 0.918);
+    padding: 8px 16px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.search-movie-form {
+    max-width: 300px;
+}
+
+.search-movie-form .full-width-input {
+    display: block;
+    min-height: 3em;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.searchResultImage {
+    width: 75px;
+    height: 117px;
+}
+
+.error {
+    color: #ff0000;
+}
+
+.ratings_table {
+    border: 1px solid;
+    /* box-sizing: border-box; */
+}
+
+th,
+td {
+    border: 1px solid;
+    padding: 15px;
+    text-align: center;
+}
+
+dl {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+dt {
+    display: block;
+}
+
+dd {
+    display: block;
+    margin-left: 40px;
+}
+
+.search-movie-link,
+.search-movie-link:link {
+    color: #da9a23;
+}
+
+.search-movie-link:visited {
+    font-style: italic;
+    color: rgb(19, 31, 139);
+}
+
+.search-movie-link:hover {
+    font-style: normal;
+    font-weight: 700;
+}
+
+.movie-link,
+.movie-link:link {
+    color: #3e228b;
+}
+
+.movie-link:visited {
+    font-style: italic;
+    color: rgb(19, 139, 109);
+}
+
+.movie-link:hover {
+    font-style: normal;
+    font-weight: 700;
+}
