@@ -18,10 +18,10 @@ Your page should reference a CSS file, /public/css/styles.css; this file should 
         <input type="submit" value="Search" class="button">
     </form>
     {{#if hasError404}}
-    <p class="error">We're sorry, but no results were found for '{{title}}'</p>
+    <p class="not-found">We're sorry, but no results were found for '{{title}}'</p>
     {{/if}}
     {{#if hasError404Id}}
-    <p class="error">We're sorry, but no results were found for movie id: {{id}}.</p>
+    <p class="not-found">We're sorry, but no results were found for movie id: {{id}}.</p>
     {{/if}}
     {{#if hasError400}}
     <p class="error">Movie name cannot be empty. Please enter a valid movie name.</p>

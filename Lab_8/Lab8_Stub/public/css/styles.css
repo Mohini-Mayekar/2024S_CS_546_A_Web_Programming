@@ -87,7 +87,12 @@ label {
 }
 
 .error {
-    color: #ff0000;
+    color: #e06e21;
+}
+
+.not-found {
+    color: red;
+    font-weight: bold;
 }
 
 .ratings_table {
@@ -141,7 +146,7 @@ dd {
 
 .movie-link:visited {
     font-style: italic;
-    color: rgb(19, 139, 109);
+    color: rgb(184, 26, 105);
 }
 
 .movie-link:hover {
