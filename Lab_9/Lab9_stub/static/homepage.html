@@ -23,20 +23,21 @@ A button to submit the form
 </head>
 
 <body>
+    <main></main>
     <header>
         <h1>Text Analyzer</h1>
     </header>
 
-    <form id="text_form" method="POST">
-        <label for="text_to_analyze">Enter text to analyze:</label><br>
-        <textarea id="text_to_analyze" name="text_to_analyze" rows="4" cols="50"></textarea><br>
+    <form class="text_form" id="text_form" method="POST">
+        <label for="text_to_analyze">Enter text to analyze:</label>
+        <textarea id="text_to_analyze" name="text_to_analyze" rows="4" cols="50"></textarea>
         <button type="submit">Analyze Text</button>
     </form>
     <div class="error" id="error"></div>
 
     <div id="text_output"></div>
     <!-- <div class="error" id="error"></div> -->
-
+    </main>
     <footer>Mohini Mayekar - 20026014</footer>
     <script src="/public/js/text_analyzer.js"></script>
 </body>

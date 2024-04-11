@@ -237,12 +237,11 @@ The form should reset itself every time after an input has been processed.
       const nonLetters = inputLen - letters;
       const vowels = getTotalNumberVowels(userInput);
       const consonants = letters - vowels;
-      const words = getTotalNumberWords(userInput).length;
-      console.log(userInput.split(/\W+/));
-      console.log(userInput.split(/\W+/).filter(Boolean));
-      const uniqueWords = getTotalNumberUniqueWords(words);
-      const longWords = getTotalNumberLongWords(words);
-      const shortWords = getTotalNumberShortWords(words);
+      const wordsArr = getTotalNumberWords(userInput);
+      const words = wordsArr.length;
+      const uniqueWords = getTotalNumberUniqueWords(wordsArr);
+      const longWords = getTotalNumberLongWords(wordsArr);
+      const shortWords = getTotalNumberShortWords(wordsArr);
 
       const newDl = document.createElement('dl');
       newDl.innerHTML = `              
