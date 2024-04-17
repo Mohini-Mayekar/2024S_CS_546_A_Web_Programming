@@ -1,0 +1,32 @@
+{{!--
+
+login form handlebar template
+
+--}}
+
+<div class="row">
+    <a href="/register" target="_self" rel="Register" class="search-movie-link">Click here to register!</a>
+    <div class="col-sm-12 col-md-4">
+        <form id="signin-form">
+            {{!-- username --}}
+            <div class="form-group"><label for="username">Username: <input class="form-control" id="username"
+                        name="username" type="text" /></label></div>
+            {{!-- password --}}
+            <div class="form-group"><label for="password">Password: <input class="form-control" id="password"
+                        name="password" type="password" /></label>
+            </div>
+            {{!-- button - login --}}
+            <div class="form-group"> <button class="form-control btn btn-primary" type="submit">Login</button>
+                {{!-- <input class="form-control btn btn-primary" type="submit" value="Login" /> --}}
+            </div>
+
+            {{#if error }}
+            <div class="form-group" id="error_div">
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            </div>
+            {{/if}}
+        </form>
+    </div>
+</div>

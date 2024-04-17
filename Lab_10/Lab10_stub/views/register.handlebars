@@ -1,0 +1,57 @@
+{{!--
+
+registration handelbars
+
+--}}
+
+<div class="row">
+    <a href="/login" target="_self" rel="Login" class="search-movie-link">Already have an account? Click here to
+        log-in</a>
+    <div class="col-sm-12 col-md-4">
+        <form id="signup-form" method="POST">
+            {{!-- firstName --}}
+            <div class="form-group"><label for="firstName">First Name: <input class="form-control" id="firstName"
+                        name="firstName" type="text" /></label></div>
+            {{!-- lastName --}}
+            <div class="form-group"><label for="lastName">Last Name: <input class="form-control" id="lastName"
+                        name="lastName" type="text" /></label></div>
+            {{!-- username --}}
+            <div class="form-group"><label for="username">Username: <input class="form-control" id="username"
+                        name="username" type="text" /></label></div>
+            {{!-- password --}}
+            <div class="form-group"><label for="password">Password: <input class="form-control" id="password"
+                        name="password" type="password" /></label></div>
+            {{!-- confirm password --}}
+            <div class="form-group"><label for="confirmPassword">Confirm Password: <input class="form-control"
+                        id="confirmPassword" name="confirmPassword" type="password" /></label></div>
+            {{!-- favoriteQuote --}}
+            <div class="form-group"><label for="favoriteQuote">Favorite Quote: <input class="form-control"
+                        id="favoriteQuote" name="favoriteQuote" type="text" /></label></div>
+            {{!-- themePreference --}}
+            <div class="form-group"><label for="themePreference">Theme Preference: <select class="form-control"
+                        id="themePreference" name="themePreference">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select></label></div>
+            {{!-- role --}}
+            <div class="form-group"><label for="role">Role: <select class="form-control" id="role" name="role">
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select></label>
+            </div>
+            {{!-- button - register --}}
+            <div class="form-group"> <button class="form-control btn btn-primary" id="submitButton" name="submitButton"
+                    type="submit">Register</button>
+                {{!-- <input class="form-control btn btn-primary" id="submitButton" name="submitButton" type="submit"
+                    value="Register" /> --}}
+            </div>
+            {{#if error }}
+            <div class="form-group" id="error_div">
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            </div>
+            {{/if}}
+        </form>
+    </div>
+</div>
