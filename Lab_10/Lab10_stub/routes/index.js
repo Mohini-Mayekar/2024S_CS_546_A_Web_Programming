@@ -5,6 +5,7 @@ const constructorMethod = (app) => {
     app.use('/', authRoutes);
 
     app.use('*', (req, res) => {
+        //res.redirect('/login');
         res.sendStatus(404);
     });
 };

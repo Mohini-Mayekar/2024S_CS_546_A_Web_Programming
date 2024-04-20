@@ -4,18 +4,19 @@
     let signUpForm = document.getElementById('signup-form');
 
     if (signInForm) {
-        let username = document.getElementById('username');
-        let password = document.getElementById('password');
-        let errorDiv = document.getElementById('error_div');
 
         signInForm.addEventListener('submit', (event) => {
             console.log('Sign-In Form submission fired');
             let errors = [];
-            event.preventDefault();
             console.log('Has a form');
-            if (errorDiv) errorDiv.hidden = true;
+            let username = document.getElementById('username').value.trim();
+            let password = document.getElementById('password').value.trim();
+            let errorDiv = document.getElementById('error');
+            // if (errorDiv) errorDiv.hidden = true;
+            errorDiv.classList.add('hidden');
+            errorDiv.textContent = "";
             let inputFieldsArr = [username, password];
-            let inputFieldNamesArr = ['username', 'password'];
+            let inputFieldNamesArr = ['Username', 'Password'];
 
             for (let i = 0; i < inputFieldsArr.length; i++) {
                 try {
@@ -29,38 +30,38 @@
             if (errors.length > 0) {
                 let myUL = document.createElement('ul');
 
-                event.preventDefault();
                 for (let i = 0; i < errors.length; i++) {
                     let myLi = document.createElement('li');
                     myLi.classList.add('error');
                     myLi.innerHTML = errors[i];
                     myUL.appendChild(myLi);
                 }
-                signInForm.appendChild(myUL);
+                errorDiv.classList.remove('hidden');
+                errorDiv.appendChild(myUL);
+                event.preventDefault();
             }
         });
     }
 
     if (signUpForm) {
-
-        let firstName = document.getElementById('firstName');
-        let lastName = document.getElementById('lastName');
-        let username = document.getElementById('username');
-        let password = document.getElementById('password');
-        let confirmPassword = document.getElementById('confirmPassword');
-        let favoriteQuote = document.getElementById('favoriteQuote');
-        let themePreference = document.getElementById('themePreference');
-        let role = document.getElementById('role');
-
-        let errorDiv = document.getElementById('error_div');
-        signInForm.addEventListener('submit', (event) => {
+        signUpForm.addEventListener('submit', (event) => {
             console.log('Sign-Up Form submission fired');
             let errors = [];
-            if (errorDiv) errorDiv.hidden = true;
-            event.preventDefault();
             console.log('Has a form');
+            let firstName = document.getElementById('firstName').value.trim();
+            let lastName = document.getElementById('lastName').value.trim();
+            let username = document.getElementById('username').value.trim();
+            let password = document.getElementById('password').value.trim();
+            let confirmPassword = document.getElementById('confirmPassword').value.trim();
+            let favoriteQuote = document.getElementById('favoriteQuote').value.trim();
+            let themePreference = document.getElementById('themePreference').value.trim();
+            let role = document.getElementById('role').value.trim();
+
+            let errorDiv = document.getElementById('error');
+            errorDiv.classList.add('hidden');
+            errorDiv.textContent = "";
             let inputFieldsArr = [firstName, lastName, username, password, confirmPassword, favoriteQuote, themePreference, role];
-            let inputFieldNamesArr = ['firstName', 'lastName', 'username', 'password', 'confirmPassword', 'favoriteQuote', 'themePreference', 'role'];
+            let inputFieldNamesArr = ['First Name', 'Last Name', 'Username', 'Password', 'Confirm Password', 'Favorite Quote', 'Theme Preference', 'Role'];
 
             for (let i = 0; i < inputFieldsArr.length; i++) {
                 try {
@@ -74,15 +75,15 @@
             if (!(password === confirmPassword)) errors.push(`Value entered in Password and Confirm Password fields do not match.`);
             if (errors.length > 0) {
                 let myUL = document.createElement('ul');
-
-                event.preventDefault();
                 for (let i = 0; i < errors.length; i++) {
                     let myLi = document.createElement('li');
                     myLi.classList.add('error');
                     myLi.innerHTML = errors[i];
                     myUL.appendChild(myLi);
                 }
-                signUpForm.appendChild(myUL);
+                errorDiv.classList.remove('hidden');
+                errorDiv.appendChild(myUL);
+                event.preventDefault();
             }
         });
     }
@@ -92,41 +93,40 @@
     };
 
     const checkisValidString = (str, variable) => {
-        //check input type is string
-        if (typeof str !== 'string') throw `Input '${variable || 'provided'}' of value '${str || 'provided variable'}' is not a string.`;
         //empty string or has only spaces
-        if ((str.replaceAll(/\s/g, '').length) === 0) throw `Input '${variable || 'provided'}' string of value '${str}' has just spaces or is an empty string.`;
-        str = str.trim();
-        if (variable === 'themePreference') {
+        if ((str.length) === 0) throw `Input '${variable || 'provided'}' has just spaces or is an empty string.`;
+        if (variable === 'Theme Preference') {
             str = str.toLowerCase();
-            if (!(str === 'light' || str === 'dark')) throw `Input '${variable || 'provided'}' string of value '${str}' is invalid."light" or "dark" are the valid inputs.`;
-        } else if (variable === 'role') {
+            if (!(str === 'light' || str === 'dark')) throw `Input '${variable || 'provided'}' is invalid."light" or "dark" are the valid inputs.`;
+        } else if (variable === 'Role') {
             str = str.toLowerCase();
-            if (!(str === 'admin' || str === 'user')) throw `Input '${variable || 'provided'}' string of value '${str}' is invalid."admin" or "user" are the valid inputs.`;
-        } else if (variable === 'password') {
+            if (!(str === 'admin' || str === 'user')) throw `Input '${variable || 'provided'}' is invalid."admin" or "user" are the valid inputs.`;
+        } else if (variable === 'Password' || variable === 'Confirm Password') {
             if (str.includes(" ")) throw `Input '${variable || 'provided'}' string of value should not have spaces.`;
-            if (str.length < 8) throw `Input '${variable || 'provided'}' string of value should be at least 8 characters long.`;
+            // if (str.length < 8) throw `Input '${variable || 'provided'}' string of value should be at least 8 characters long.`;
             //The constraints for password will be: There needs to be at least one uppercase character, there has to be at least one number and there has to be at least one special character:  for example:  Not valid: test123, test123$, foobar, tS12$ Valid: Test123$, FooBar123*, HorsePull748*%
 
             //TO DO: add constraint
+            const regex = new RegExp(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/);
+            if (!(regex.test(str))) throw `Input '${variable || 'provided'}' needs to have at least one uppercase character, at least one number, at least one special character and should be at least 8 characters long.`;
 
         } else { //firstName, lastName, username, favoriteQuote
             //string does not contain digits
-            if (str.match(/\d+/g) !== null) throw `Input '${variable || 'provided'}' string of value '${str}' has numbers in the input string.`;
+            if (str.match(/\d+/g) !== null) throw `Input '${variable || 'provided'}' is invalid.It should not have numbers in the input string.`;
             let min = 2;
             let max = 25;
-            if (variable === 'username') {
+            if (variable === 'Username') {
                 min = 5;
                 max = 10;
                 str = str.toLowerCase();//to handle case-insensitive constraint
-            } else if (variable === 'favoriteQuote') {
+            } else if (variable === 'Favorite Quote') {
                 min = 20;
                 max = 255;
             }
-            if (str.length < min || str.length > max) throw `Input '${variable || 'provided'}' string of value '${str}' should be at least '${min}' characters long with a max of '${max}' characters.`;
+            if (str.length < min || str.length > max) throw `Input '${variable || 'provided'}' should be at least '${min}' characters long with a max of '${max}' characters.`;
 
         }
         return str;
     };
 }
-)
+)();

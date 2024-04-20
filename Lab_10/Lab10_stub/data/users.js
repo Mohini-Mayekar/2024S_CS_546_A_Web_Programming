@@ -24,6 +24,13 @@ export const registerUser = async (
 
   //DB call to store new user
   const userCollection = await users();
+  //check for duplicate user
+  const userInfo = await userCollection.findOne({
+    username: newUser.username
+  });
+
+  if (userInfo) throw `User with username '${newUser.username}' already exist.`;
+
   const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw 'Could not add user';
@@ -33,17 +40,14 @@ export const registerUser = async (
 
 export const loginUser = async (username, password) => {
   //validation
-  let user = validateUserInput(firstName, lastName, username, password, favoriteQuote, themePreference, role);
+  let user = validateUserInput(username, password);
 
   let userName = user.username;
   const userCollection = await users();
   const userData = await userCollection.findOne({ username: userName });
   if (userData === null) throw `Either the username or password is invalid.`;
-  let pass = user.password;
-  //Hashing the password
-  const hash = await bcrypt.hash(pass, saltRounds);
   //comparing with the stored hash
-  let compareToMatch = await bcrypt.compare(userData.password, hash);
+  let compareToMatch = await bcrypt.compare(user.password, userData.password);
 
   if (!compareToMatch) throw `Either the username or password is invalid.`;
   delete userData.password;

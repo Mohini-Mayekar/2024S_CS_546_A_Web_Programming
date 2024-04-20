@@ -6,12 +6,12 @@ If the user is logged in , and 'GET /user' endpoint is called, you will render t
 
 <div id="userView">
     <p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}}. Your role in the system is:
-        {{role}}."</p>
+        {{role}}.</p>
     <p id="quote">Favorite Quote: {{favoriteQuote}}</p>
     <!-- link here for admin, ONLY if they are an admin user <a id="adminLink" href="/admin">Admin Page</a> !-->
-    {{#if role is "admin"}}
-    <a id="adminLink" href="/admin">Admin Page</a>
+    {{#if isAdmin}}
+    <a class="page-link" id="adminLink" href="/admin">Admin Page</a>
     {{/if}}
 
-    <a class="footer1" id="logoutLink" href="/logout">Logout</a>
+    <a class="page-link" id="logoutLink" href="/logout">Logout</a>
 </div>

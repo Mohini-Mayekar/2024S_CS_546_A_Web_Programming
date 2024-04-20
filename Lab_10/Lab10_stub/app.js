@@ -50,11 +50,33 @@ const app = express();
 import session from 'express-session';
 import configRoutes from './routes/index.js';
 import cookieParser from 'cookie-parser';
+import exphbs from 'express-handlebars';
+//import { rewriteUnsupportedBrowserMethods } from './middleware.js';
+const staticDir = express.static('public');
+
+const rewriteUnsupportedBrowserMethods = (req, res, next) => {
+    // If the user posts to the server with a property called _method, rewrite the request's method
+    // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
+    // rewritten in this middleware to a PUT route
+    if (req.body && req.body._method) {
+        req.method = req.body._method;
+        delete req.body._method;
+    }
+
+    // let the next middleware run:
+    next();
+};
+
 
 app.use(cookieParser());
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
+app.use('/public', staticDir);
+app.use(rewriteUnsupportedBrowserMethods);
 app.use(session({
     name: 'AuthenticationState',
     secret: 'some secret string!',
@@ -62,7 +84,7 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use('/', (req, res, next) => {
+app.use('/', async (req, res, next) => {
     let currTimestamp = new Date().toUTCString();
     let reqMethod = req.method;
     let reqRoute = req.originalUrl;
@@ -73,71 +95,68 @@ app.use('/', (req, res, next) => {
 
     console.log(`[${currTimestamp}]: ${reqMethod} ${reqRoute} (${userAuth})`);
 
-    if (userAuth === 'Authenticated User') {
-        if (req.session.user.role === 'admin') {
-            res.redirect('/admin');
+    if (reqRoute === '/') {
+        if (req.session.user) {
+            if (req.session.user.role === 'admin') {
+                res.redirect('/admin');
+            } else {
+                res.redirect('/user');
+            }
         } else {
-            res.redirect('/user');
+            return res.redirect('/login');
         }
-    } else {
-        return res.redirect('/login');
     }
     next();
 });
 
-app.use('/login', (req, res, next) => {
+app.get('/login', async (req, res, next) => {
+    console.log("inside /login middleware")
     if (req.session.user) {
         if (req.session.user.role === 'admin') {
-            res.redirect('/admin');
+            return res.redirect('/admin');
         } else {
-            res.redirect('/user');
+            return res.redirect('/user');
         }
-    } else {
-        return res.redirect('/login');
     }
     next();
 });
 
-app.use('/register', (req, res, next) => {
+app.get('/register', async (req, res, next) => {
     if (req.session.user) {
         if (req.session.user.role === 'admin') {
-            res.redirect('/admin');
+            return res.redirect('/admin');
         } else {
-            res.redirect('/user');
-        }
-    } else {
-        return res.redirect('/register');
-    }
-    next();
-});
-
-app.use('/user', (req, res, next) => {
-    if (!(req.session.user)) {
-        res.redirect('/login');
-    } else {
-        next();
-    }
-});
-
-app.use('/admin', (req, res, next) => {
-    if (!(req.session.user)) {
-        return res.redirect('/login');
-    } else {
-        if (req.session.user.role === 'admin') {
-            res.redirect('/admin');
-        } else {
-            res.render('error', { hasError403: true });
+            return res.redirect('/user');
         }
     }
     next();
 });
 
-app.use('/logout', (req, res, next) => {
+app.get('/user', async (req, res, next) => {
     if (!(req.session.user)) {
         return res.redirect('/login');
     }
     next();
 });
+
+app.get('/admin', async (req, res, next) => {
+    if (!(req.session.user)) {
+        return res.redirect('/login');
+    } else {
+        if (!(req.session.user.role === 'admin')) {
+            return res.status(403).render('error', { hasError403: true });
+        }
+    }
+    next();
+});
+
+app.get('/logout', async (req, res, next) => {
+    if (!(req.session.user)) {
+        return res.redirect('/login');
+    }
+    next();
+});
+
 
 configRoutes(app);
 

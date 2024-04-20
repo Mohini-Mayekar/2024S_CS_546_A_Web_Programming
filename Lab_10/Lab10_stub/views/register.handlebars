@@ -5,10 +5,10 @@ registration handelbars
 --}}
 
 <div class="row">
-    <a href="/login" target="_self" rel="Login" class="search-movie-link">Already have an account? Click here to
+    <a href="/login" target="_self" rel="Login" class="page-link">Already have an account? Click here to
         log-in</a>
     <div class="col-sm-12 col-md-4">
-        <form id="signup-form" method="POST">
+        <form class="sign-form" id="signup-form" action="/register" method="POST">
             {{!-- firstName --}}
             <div class="form-group"><label for="firstName">First Name: <input class="form-control" id="firstName"
                         name="firstName" type="text" /></label></div>
@@ -42,16 +42,16 @@ registration handelbars
             {{!-- button - register --}}
             <div class="form-group"> <button class="form-control btn btn-primary" id="submitButton" name="submitButton"
                     type="submit">Register</button>
-                {{!-- <input class="form-control btn btn-primary" id="submitButton" name="submitButton" type="submit"
-                    value="Register" /> --}}
             </div>
             {{#if error }}
             <div class="form-group" id="error_div">
-                <div class="alert alert-danger">
+                <div class="error">
                     {{ error }}
                 </div>
             </div>
             {{/if}}
+
+            <div class="error" id="error"></div>
         </form>
     </div>
 </div>
