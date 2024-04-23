@@ -94,6 +94,7 @@
 
     const checkisValidString = (str, variable) => {
         //empty string or has only spaces
+        str = str.trim();
         if ((str.length) === 0) throw `Input '${variable || 'provided'}' has just spaces or is an empty string.`;
         if (variable === 'Theme Preference') {
             str = str.toLowerCase();
@@ -103,11 +104,9 @@
             if (!(str === 'admin' || str === 'user')) throw `Input '${variable || 'provided'}' is invalid."admin" or "user" are the valid inputs.`;
         } else if (variable === 'Password' || variable === 'Confirm Password') {
             if (str.includes(" ")) throw `Input '${variable || 'provided'}' string of value should not have spaces.`;
-            // if (str.length < 8) throw `Input '${variable || 'provided'}' string of value should be at least 8 characters long.`;
             //The constraints for password will be: There needs to be at least one uppercase character, there has to be at least one number and there has to be at least one special character:  for example:  Not valid: test123, test123$, foobar, tS12$ Valid: Test123$, FooBar123*, HorsePull748*%
 
-            //TO DO: add constraint
-            const regex = new RegExp(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/);
+            const regex = new RegExp(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_,:;\-.?`'"{}[\]|\\=+<>\/~+])[A-Za-z\d!@#$%^&*()_,:;\-.?`'"{}[\]|\\=+<>\/~+]{8,}$/);
             if (!(regex.test(str))) throw `Input '${variable || 'provided'}' needs to have at least one uppercase character, at least one number, at least one special character and should be at least 8 characters long.`;
 
         } else { //firstName, lastName, username, favoriteQuote

@@ -110,7 +110,7 @@ app.use('/', async (req, res, next) => {
 });
 
 app.get('/login', async (req, res, next) => {
-    console.log("inside /login middleware")
+    //console.log("inside /login middleware")
     if (req.session.user) {
         if (req.session.user.role === 'admin') {
             return res.redirect('/admin');
@@ -144,7 +144,7 @@ app.get('/admin', async (req, res, next) => {
         return res.redirect('/login');
     } else {
         if (!(req.session.user.role === 'admin')) {
-            return res.status(403).render('error', { hasError403: true });
+            return res.status(403).render('error', { hasError403: true, themePreference: req.session.user.themePreference });
         }
     }
     next();

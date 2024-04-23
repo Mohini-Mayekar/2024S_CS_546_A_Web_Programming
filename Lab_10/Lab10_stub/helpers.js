@@ -1,6 +1,6 @@
 //You can add and export any helper functions you want here. If you aren't using any, then you can just leave this file as is.
+const regex = new RegExp(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_,:;\-.?`'"{}[\]|\\=+<>\/~+])[A-Za-z\d!@#$%^&*()_,:;\-.?`'"{}[\]|\\=+<>\/~+]{8,}$/);
 
-const regex = new RegExp(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/);
 
 let checkUndefinedOrNull = (obj, variable) => {
     if (obj === undefined || obj === null) throw `All fields need to have valid values. Input for '${variable || 'provided variable'}' param is undefined or null.`;
@@ -22,7 +22,6 @@ let checkisValidString = (str, variable) => {
         if (str.includes(" ")) throw `Input '${variable || 'provided'}' should not have spaces.`;
         //The constraints for password will be: There needs to be at least one uppercase character, there has to be at least one number and there has to be at least one special character:  for example:  Not valid: test123, test123$, foobar, tS12$ Valid: Test123$, FooBar123*, HorsePull748*%
 
-        //TO DO: add constraint        
         if (!(regex.test(str))) throw `Input '${variable || 'provided'}' needs to have at least one uppercase character, at least one number, at least one special character and should be at least 8 characters long.`;
 
     } else { //firstName, lastName, username, favoriteQuote

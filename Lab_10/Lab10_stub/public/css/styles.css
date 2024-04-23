@@ -84,13 +84,13 @@ p {
 }
 
 .error {
-    color: red;
+    color: #da9a23;
     font-weight: bold;
-
+    width: 170%
 }
 
 .forbidden {
-    color: red;
+    color: #da9a23;
 }
 
 div {
